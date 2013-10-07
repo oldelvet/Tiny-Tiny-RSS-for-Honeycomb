@@ -623,6 +623,8 @@ public class HeadlinesFragment extends Fragment implements OnItemClickListener, 
 			}			
 		}
 
+		private boolean tagslogged = false;
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -630,6 +632,14 @@ public class HeadlinesFragment extends Fragment implements OnItemClickListener, 
 
 			final Article article = items.get(position);
 
+			if (!tagslogged) {
+				Log.e("REM", "\nheadlines_row=" + R.layout.headlines_row
+						+ "\nheadlines_row_loadmore=" + R.layout.headlines_row_loadmore
+						+ "\nheadlines_row_unread=" + R.layout.headlines_row_unread
+						+ "\nheadlines_row_selected=" + R.layout.headlines_row_selected
+						+ "\nheadlines_row_selected_unread=" + R.layout.headlines_row_selected_unread);
+				tagslogged = true;
+			}
 			int layoutId = R.layout.headlines_row;
 			
 			switch (getItemViewType(position)) {
@@ -651,7 +661,14 @@ public class HeadlinesFragment extends Fragment implements OnItemClickListener, 
 				oldLayoutId = (Integer) v.getTag();
 			}
 
+			if ((oldLayoutId != null) && (oldLayoutId != layoutId)) {
+				Log.e("REM", "Should be changing Layout from " + oldLayoutId + " to " + layoutId);
+			}
 			if ((oldLayoutId == null) || (oldLayoutId != layoutId)) {
+				if ((oldLayoutId != null) && (oldLayoutId != layoutId)) {
+					Log.e("REM", "Layout changing from " + oldLayoutId + " to " + layoutId);
+				}
+
 				LayoutInflater vi = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				v = vi.inflate(layoutId, null);
 				v.setTag(layoutId);
