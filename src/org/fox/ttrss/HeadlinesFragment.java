@@ -629,27 +629,32 @@ public class HeadlinesFragment extends Fragment implements OnItemClickListener, 
 			View v = convertView;
 
 			final Article article = items.get(position);
+
+			int layoutId = R.layout.headlines_row;
 			
-			if (v == null) {
-				int layoutId = R.layout.headlines_row;
-				
-				switch (getItemViewType(position)) {
-				case VIEW_LOADMORE:
-					layoutId = R.layout.headlines_row_loadmore;
-					break;
-				case VIEW_UNREAD:
-					layoutId = R.layout.headlines_row_unread;
-					break;
-				case VIEW_SELECTED:
-					layoutId = R.layout.headlines_row_selected;
-					break;
-				case VIEW_SELECTED_UNREAD:
-					layoutId = R.layout.headlines_row_selected_unread;
-					break;
-				}
-				
+			switch (getItemViewType(position)) {
+			case VIEW_LOADMORE:
+				layoutId = R.layout.headlines_row_loadmore;
+				break;
+			case VIEW_UNREAD:
+				layoutId = R.layout.headlines_row_unread;
+				break;
+			case VIEW_SELECTED:
+				layoutId = R.layout.headlines_row_selected;
+				break;
+			case VIEW_SELECTED_UNREAD:
+				layoutId = R.layout.headlines_row_selected_unread;
+				break;
+			}
+			Integer oldLayoutId = null;
+			if (v != null) {
+				oldLayoutId = (Integer) v.getTag();
+			}
+
+			if ((oldLayoutId == null) || (oldLayoutId != layoutId)) {
 				LayoutInflater vi = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				v = vi.inflate(layoutId, null);
+				v.setTag(layoutId);
 				
 				// http://code.google.com/p/android/issues/detail?id=3414
 				((ViewGroup)v).setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
